@@ -552,6 +552,47 @@ footer a { color: var(--primary); text-decoration: none; }
   background: rgba(50, 48, 55, 0.9);
 }
 
+/* Back to Top */
+.back-to-top {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(30,30,35,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--on-bg-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.2,0,0,1), transform 0.3s cubic-bezier(0.2,0,0,1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: rgba(50,50,55,0.9);
+  color: var(--primary);
+}
+.light .back-to-top {
+  background: rgba(240,240,245,0.85);
+  border-color: rgba(0,0,0,0.08);
+}
+.light .back-to-top:hover {
+  background: rgba(225,225,230,0.95);
+}
+
 /* About Modal */
 .about-overlay {
   position: fixed;
@@ -1112,6 +1153,10 @@ footer a { color: var(--primary); text-decoration: none; }
 <footer>
   <span data-i18n="source">数据来源</span> <a href="https://miuiver.com/xiaomi-device-codename/" target="_blank">MIUI版本</a> · <span data-i18n="updated">最后更新</span> 2026-07
 </footer>
+
+<button class="back-to-top" id="backToTop" aria-label="返回顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <div class="slogan-toast" id="sloganToast"></div>
 
@@ -1856,6 +1901,15 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && $aboutOverlay.classList.contains('show')) {
     $aboutOverlay.classList.remove('show');
   }
+});
+
+// ─── 返回顶部 ───
+const $backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  $backToTop.classList.toggle('visible', window.scrollY > 400);
+});
+$backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 </body>
