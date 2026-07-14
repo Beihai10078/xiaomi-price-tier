@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>米系设备首发价格天梯图</title>
+<meta property="og:title" content="米系设备首发价格天梯图">
+<meta property="og:description" content="Xiaomi / Redmi / POCO Launch Price Tier List">
+<meta property="og:type" content="website">
+<style>
+:root {
+  --bg: #1C1B1F;
+  --surface: #25232A;
+  --surface2: #2E2C35;
+  --surface3: #383640;
+  --primary: #6750A4;
+  --primary-container: #4A3D6B;
+  --on-bg: #E6E1E5;
+  --on-bg-dim: #CAC4D0;
+  --on-surface: #E6E1E5;
+  --on-surface-dim: #CAC4D0;
+  --outline: #938F99;
+  --outline-variant: #49454F;
+  --brand-xiaomi: #FF6900;
+  --brand-redmi: #E62E2E;
+  --brand-poco: #FFD700;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 200ms cubic-bezier(0.2,0,0,1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--on-bg);
+  min-height: 100vh;
+  font-size: 16px;
+}
+.container { max-width:1200px; margin:0 auto; padding:24px 20px 48px; }
+
+/* Header */
+header {
+  text-align: center;
+  padding: 48px 0 32px;
+}
+header h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #FF6900, #FFD700, #E62E2E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+header p.sub {
+  color: var(--on-bg-dim);
+  font-size: 16px;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.stat-chip {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  text-align: center;
+  min-width: 100px;
+}
+.stat-chip .num {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--brand-xiaomi), var(--brand-redmi));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-chip .label {
+  font-size: 12px;
+  color: var(--on-bg-dim);
+  margin-top: 4px;
+}
+
+/* Filters */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.filter-chip {
+  padding: 8px 18px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--on-bg-dim);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transition);
+  user-select: none;
+}
+.filter-chip:hover {
+  background: var(--surface2);
+  color: var(--on-bg);
+}
+.filter-chip.active {
+  background: var(--primary-container);
+  border-color: var(--primary);
+  color: #EADDFF;
+}
+.filter-chip.xiaomi-active {
+  background: rgba(255,105,0,0.2);
+  border-color: var(--brand-xiaomi);
+  color: var(--brand-xiaomi);
+}
+.filter-chip.redmi-active {
+  background: rgba(230,46,46,0.2);
+  border-color: var(--brand-redmi);
+  color: var(--brand-redmi);
+}
+.filter-chip.poco-active {
+  background: rgba(255,215,0,0.15);
+  border-color: var(--brand-poco);
+  color: var(--brand-poco);
+}
+
+/* Filter label */
+.filter-section {
+  text-align: center;
+  margin-bottom: 12px;
+}
+.filter-label {
+  font-size: 12px;
+  color: var(--on-bg-dim);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Result count */
+.result-count {
+  text-align: center;
+  color: var(--on-bg-dim);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Tier Section */
+.tier-section {
+  margin-bottom: 32px;
+}
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+.tier-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tier-info h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+.tier-info span {
+  font-size: 13px;
+  color: var(--on-bg-dim);
+}
+.tier-count {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--on-bg-dim);
+}
+
+/* Device Grid */
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.device-card {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.device-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.device-card .name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-bg);
+  line-height: 1.3;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.device-card .codename {
+  font-size: 12px;
+  color: var(--on-bg-dim);
+  font-family: 'Consolas', 'SF Mono', 'Cascadia Code', monospace;
+  margin-bottom: 6px;
+}
+.device-card .soc {
+  font-size: 11px;
+  color: var(--outline);
+  margin-bottom: 4px;
+  font-family: 'Consolas', 'SF Mono', 'Cascadia Code', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.device-card .price {
+  font-size: 18px;
+  font-weight: 700;
+}
+.device-card .date {
+  font-size: 11px;
+  color: var(--outline);
+  margin-top: 4px;
+}
+.device-card .brand-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dot-xiaomi { background: var(--brand-xiaomi); }
+.dot-redmi { background: var(--brand-redmi); }
+.dot-poco { background: var(--brand-poco); }
+
+/* Tier colors on cards */
+.device-card.tier-0 { border-left: 3px solid #4CAF50; }
+.device-card.tier-1 { border-left: 3px solid #00BCD4; }
+.device-card.tier-2 { border-left: 3px solid #2196F3; }
+.device-card.tier-3 { border-left: 3px solid #9C27B0; }
+.device-card.tier-4 { border-left: 3px solid #FF9800; }
+.device-card.tier-5 { border-left: 3px solid #F44336; }
+.device-card.tier-6 { border-left: 3px solid #FFD700; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface3);
+  color: var(--on-bg);
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+  z-index: 1000;
+}
+.toast.show {
+  opacity: 1;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--on-bg-dim);
+  display: none;
+}
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--outline);
+  font-size: 13px;
+}
+footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  header h1 { font-size: 28px; }
+  .device-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .stat-chip { min-width: 70px; padding: 10px 14px; }
+  .stat-chip .num { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>米系设备首发价格天梯图</h1>
+  <p class="sub">Xiaomi / Redmi / POCO Launch Price Tier List</p>
+</header>
+
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-chip"><span class="num">246</span><span class="label">总设备数</span></div>
+    <div class="stat-chip"><span class="num">242</span><span class="label">有价格数</span></div>
+    <div class="stat-chip"><span class="num">¥699</span><span class="label">最低价</span></div>
+    <div class="stat-chip"><span class="num">¥9,999</span><span class="label">最高价</span></div>
+    <div class="stat-chip"><span class="num">¥2,499</span><span class="label">中位价</span></div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">品牌</div>
+    <div class="filter-bar" id="brandBar">
+      <button class="filter-chip active" data-filter="all">全部</button>
+      <button class="filter-chip" data-filter="xiaomi">米系</button>
+      <button class="filter-chip" data-filter="redmi">红米</button>
+      <button class="filter-chip" data-filter="poco">POCO</button>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">类型</div>
+    <div class="filter-bar" id="typeBar">
+      <button class="filter-chip active" data-filter="all">全部</button>
+      <button class="filter-chip" data-filter="phone">手机</button>
+      <button class="filter-chip" data-filter="tablet">平板</button>
+      <button class="filter-chip" data-filter="fold">折叠屏</button>
+    </div>
+  </div>
+
+  <div class="result-count" id="resultCount"></div>
+
+  <div id="tierContainer"></div>
+
+  <div class="empty-state" id="emptyState">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <h3>没有匹配的设备</h3>
+    <p>试试调整筛选条件</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  数据来源 <a href="https://miuiver.com/xiaomi-device-codename/" target="_blank">MIUI版本</a> · 最后更新 2026-07 &nbsp;|&nbsp; <a href="xiaomi-codename.html">代号查询器</a>
+</footer>
+
+<script>
+// ─── 设备数据 ───
+const DEVICES = [
+  {n:"Redmi 12C",c:"12c",d:"2022-12-31",b:"redmi",t:"phone",a:"",p:499},
+  {n:"红米6A",c:"6a",d:"2018-06-01",b:"redmi",t:"phone",a:"",s:"Helio A22",p:549},
+  {n:"Redmi 7A",c:"7a",d:"2019-05-28",b:"redmi",t:"phone",a:"",s:"骁龙SDM439",p:549},
+  {n:"Redmi 10A",c:"10a",d:"2022-03-01",b:"redmi",t:"phone",a:"",p:549},
+  {n:"REDMI 14C",c:"14c",d:"2024-12-30",b:"redmi",t:"phone",a:"",p:569},
+  {n:"红米4",c:"4",d:"2018-04-10",b:"redmi",t:"phone",a:"",s:"骁龙625",p:599},
+  {n:"Redmi 9A",c:"9a",d:"2020-07-28",b:"redmi",t:"phone",a:"",p:599},
+  {n:"Redmi 13C",c:"13c",d:"2023-12-30",b:"redmi",t:"phone",a:"",p:599},
+  {n:"红米Note 5A 高配版",c:"ugg",d:"2017-08-21",b:"redmi",t:"phone",a:"",p:699},
+  {n:"红米Note 5A 标准版",c:"ugglite",d:"2017-08-21",b:"redmi",t:"phone",a:"",p:699},
+  {n:"红米5",c:"5",d:"2017-12-12",b:"redmi",t:"phone",a:"",s:"骁龙450",p:699},
+  {n:"Redmi 7",c:"7",d:"2019-03-18",b:"redmi",t:"phone",a:"",s:"骁龙675",p:699},
+  {n:"红米6",c:"6",d:"2018-06-15",b:"redmi",t:"phone",a:"",s:"Helio P22",p:729},
+  {n:"小米4C",c:"libra",d:"2015-09-01",b:"xiaomi",t:"phone",a:"",s:"骁龙808",p:759},
+  {n:"红米Note",c:"lcsh92",d:"2014-03-20",b:"redmi",t:"phone",a:"",p:799},
+  {n:"红米Note 2",c:"hermes",d:"2015-08-13",b:"redmi",t:"phone",a:"",p:799},
+  {n:"红米Note 4",c:"note-4",d:"2016-08-26",b:"redmi",t:"phone",a:"",s:"Helio X20",p:799},
+  {n:"Redmi 8",c:"8",d:"2019-10-14",b:"redmi",t:"phone",a:"",s:"骁龙439",p:799},
+  {n:"Redmi 9",c:"9",d:"2020-06-24",b:"redmi",t:"phone",a:"",p:799},
+  {n:"Redmi Note 12",c:"note-12",d:"2022-10-27",b:"redmi",t:"phone",a:"",p:799},
+  {n:"Redmi 12",c:"12",d:"2023-08-15",b:"redmi",t:"phone",a:"",p:799},
+  {n:"Redmi Note 13",c:"note-13",d:"2023-09-21",b:"redmi",t:"phone",a:"",p:799},
+  {n:"Redmi Note 14",c:"note-14",d:"2024-09-26",b:"redmi",t:"phone",a:"",s:"天玑7025-Ultra",p:799},
+  {n:"REDMI 17C",c:"17c",d:"2026-06-23",b:"redmi",t:"phone",a:"",s:"Helio G81 Ultra",p:799},
+  {n:"红米5 Plus",c:"5-plus",d:"2017-12-12",b:"redmi",t:"phone",a:"",s:"骁龙625",p:800},
+  {n:"红米Note 5 / Pro",c:"whyred",d:"2018-03-20",b:"redmi",t:"phone",a:"",s:"骁龙636",p:839},
+  {n:"红米Note 8",c:"ginkgo",d:"2019-08-29",b:"redmi",t:"phone",a:"",s:"骁龙665",p:849},
+  {n:"红米6 Pro",c:"6-pro",d:"2018-06-01",b:"redmi",t:"phone",a:"",s:"骁龙625",p:869},
+  {n:"红米Note 3 双网通版",c:"hennessy",d:"2015-11-24",b:"redmi",t:"phone",a:"",p:899},
+  {n:"红米Note 3 台湾特别版",c:"kate",d:"2015-11-25",b:"redmi",t:"phone",a:"",p:899},
+  {n:"红米Note 3 全网通版",c:"kenzo",d:"2015-11-25",b:"redmi",t:"phone",a:"",p:899},
+  {n:"小米Max",c:"max",d:"2016-05-01",b:"xiaomi",t:"phone",a:"",s:"骁龙652",p:899},
+  {n:"红米Note 4X",c:"note-4x",d:"2017-02-13",b:"redmi",t:"phone",a:"",s:"骁龙625",p:899},
+  {n:"小米5C",c:"meri",d:"2017-02-28",b:"xiaomi",t:"phone",a:"",s:"澎湃S1",p:899},
+  {n:"小米Max 2",c:"max-2",d:"2017-05-01",b:"xiaomi",t:"phone",a:"",s:"骁龙625",p:939},
+  {n:"红米Note 10 Pro",c:"sweet",d:"2021-05-26",b:"redmi",t:"phone",a:"",p:949},
+  {n:"小米平板2",c:"latte",d:"2015-11-24",b:"xiaomi",t:"tablet",a:"",p:999},
+  {n:"红米Pro",c:"pro",d:"2016-07-27",b:"redmi",t:"phone",a:"",s:"Helio X25",p:999},
+  {n:"小米平板4/Plus",c:"clover",d:"2018-08-14",b:"xiaomi",t:"tablet",a:"",p:999},
+  {n:"红米Note 7",c:"lavender",d:"2019-01-10",b:"redmi",t:"phone",a:"",s:"骁龙660 AIE",p:999},
+  {n:"Redmi 10X 4G",c:"10x-4g",d:"2020-05-26",b:"redmi",t:"phone",a:"",p:999},
+  {n:"红米Note 9 4G / 红米9T",c:"lime",d:"2020-11-26",b:"redmi",t:"phone",a:"",p:999},
+  {n:"红米Note 10 5G",c:"camellian",d:"2021-03-04",b:"redmi",t:"phone",a:"",p:999},
+  {n:"红米Note 8 (21年款)",c:"biloba",d:"2021-05-24",b:"redmi",t:"phone",a:"",p:999},
+  {n:"红米Note 10 (China) / POCO M3 Pro",c:"camellia",d:"2021-05-26",b:"redmi",t:"phone",a:"POCO M3 Pro",p:999},
+  {n:"Redmi Note 11SE",c:"note-11se",d:"2022-05-01",b:"redmi",t:"phone",a:"",p:999},
+  {n:"红米平板2",c:"taiko",d:"2025-06-05",b:"redmi",t:"tablet",a:"",p:999},
+  {n:"红米Note15 5G",c:"kunzite",d:"2025-08-21",b:"redmi",t:"phone",a:"",p:999},
+  {n:"REDMI Note 15",c:"note-15",d:"2025-08-21",b:"redmi",t:"phone",a:"",s:"骁龙6 Gen3",p:999},
+  {n:"Redmi Note 13 Pro",c:"note-13-pro",d:"2023-09-21",b:"redmi",t:"phone",a:"",p:1049},
+  {n:"小米5",c:"gemini",d:"2016-02-01",b:"xiaomi",t:"phone",a:"",s:"骁龙820",p:1099},
+  {n:"小米Play",c:"play",d:"2018-12-24",b:"xiaomi",t:"phone",a:"",s:"Helio P35",p:1099},
+  {n:"红米Note 10",c:"mojito",d:"2021-05-26",b:"redmi",t:"phone",a:"",s:"天玑700",p:1099},
+  {n:"Redmi Note 11R",c:"note-11r",d:"2022-09-30",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"红米Note12 5G / 红米Note12R Pro",c:"sunstone",d:"2022-10-27",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"红米Note12 4G",c:"tapas",d:"2023-03-30",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"Redmi Note12R",c:"note12r",d:"2023-06-30",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"红米Note13 5G / 13R Pro",c:"gold",d:"2023-09-21",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"红米Note13 4G",c:"sapphire",d:"2024-01-15",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"Redmi Note 13R",c:"note-13r",d:"2024-05-17",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"Redmi 14R",c:"14r",d:"2024-09-12",b:"redmi",t:"phone",a:"",s:"骁龙 4 Gen2",p:1099},
+  {n:"红米Note14 5G / POCO M7 Pro 5G",c:"beryl",d:"2024-09-26",b:"redmi",t:"phone",a:"POCO M7 Pro 5G",p:1099},
+  {n:"红米Note 14 4G",c:"tanzanite",d:"2025-01-13",b:"redmi",t:"phone",a:"",p:1099},
+  {n:"小米5X",c:"5x",d:"2017-07-26",b:"xiaomi",t:"phone",a:"",s:"骁龙625",p:1129},
+  {n:"红米Note14 Pro / POCO X7",c:"malachite",d:"2024-09-26",b:"redmi",t:"phone",a:"POCO X7",s:"天玑7300 Ultra",p:1149},
+  {n:"Redmi Note 13R Pro",c:"note-13r-pro",d:"2023-11-20",b:"redmi",t:"phone",a:"",s:"天玑6080",p:1198},
+  {n:"红米Note 9",c:"note-9",d:"2020-11-26",b:"redmi",t:"phone",a:"",p:1199},
+  {n:"红米Note11",c:"spes",d:"2021-10-28",b:"redmi",t:"phone",a:"",s:"天玑810",p:1199},
+  {n:"红米Note11 5G",c:"evergo",d:"2021-10-28",b:"redmi",t:"phone",a:"",p:1199},
+  {n:"红米Note11 4G",c:"selenes",d:"2021-10-28",b:"redmi",t:"phone",a:"",p:1199},
+  {n:"Redmi Note 11E",c:"note-11e",d:"2022-03-01",b:"redmi",t:"phone",a:"",p:1199},
+  {n:"小米11 青春版",c:"renoir",d:"2021-03-29",b:"xiaomi",t:"phone",a:"",p:1269},
+  {n:"小米6X",c:"6x",d:"2018-04-27",b:"xiaomi",t:"phone",a:"",s:"骁龙660AIE",p:1299},
+  {n:"小米CC9e",c:"cc9e",d:"2019-07-02",b:"xiaomi",t:"phone",a:"",s:"骁龙665",p:1299},
+  {n:"红米Note 8 Pro",c:"begonia",d:"2019-08-29",b:"redmi",t:"phone",a:"",s:"G90T",p:1299},
+  {n:"红米Note 9 5G",c:"cannon",d:"2020-11-26",b:"redmi",t:"phone",a:"",p:1299},
+  {n:"红米Note9 Pro",c:"joyeuse",d:"2020-11-26",b:"redmi",t:"phone",a:"",s:"骁龙750G",p:1299},
+  {n:"小米11青春活力版",c:"11青春活力版",d:"2021-12-01",b:"xiaomi",t:"phone",a:"",p:1299},
+  {n:"Redmi Note 12 Pro",c:"note-12-pro",d:"2022-10-27",b:"redmi",t:"phone",a:"",p:1299},
+  {n:"REDMI Turbo 4",c:"turbo-4",d:"2025-01-02",b:"redmi",t:"phone",a:"",s:"天玑8400-Ultra",p:1349},
+  {n:"红米Note15 Pro",c:"lapis",d:"2025-08-21",b:"redmi",t:"phone",a:"",s:"天玑7400-Ultra",p:1349},
+  {n:"小米5S",c:"capricorn",d:"2016-09-27",b:"xiaomi",t:"phone",a:"",s:"骁龙821",p:1399},
+  {n:"小米8青春版",c:"8青春版",d:"2018-09-19",b:"xiaomi",t:"phone",a:"",s:"骁龙660 AIE",p:1399},
+  {n:"红米Note 8 Pro 印度版",c:"begoniain",d:"2019-10-21",b:"redmi",t:"phone",a:"",p:1399},
+  {n:"Redmi 10X 5G",c:"10x-5g",d:"2020-05-26",b:"redmi",t:"phone",a:"",p:1399},
+  {n:"Redmi Note 11T Pro",c:"note-11t-pro",d:"2022-05-24",b:"redmi",t:"phone",a:"",p:1399},
+  {n:"Redmi Note12T Pro",c:"note12t-pro",d:"2023-05-30",b:"redmi",t:"phone",a:"",p:1399},
+  {n:"小米2A",c:"taurus",d:"2013-10-24",b:"xiaomi",t:"phone",a:"",p:1499},
+  {n:"小米平板1",c:"mocha",d:"2014-05-15",b:"xiaomi",t:"tablet",a:"",p:1499},
+  {n:"小米平板3",c:"cappu",d:"2017-04-06",b:"xiaomi",t:"tablet",a:"",p:1499},
+  {n:"Redmi K30i",c:"k30i",d:"2020-05-01",b:"redmi",t:"phone",a:"",p:1499},
+  {n:"红米Note13 Pro 5G / POCO X6",c:"garnet",d:"2023-09-21",b:"redmi",t:"phone",a:"POCO X6",p:1499},
+  {n:"红米Note 14 Pro 4G",c:"obsidian",d:"2025-01-13",b:"redmi",t:"phone",a:"",p:1499},
+  {n:"小米8 SE",c:"sirius",d:"2018-05-01",b:"xiaomi",t:"phone",a:"",s:"骁龙710",p:1599},
+  {n:"小米Max3",c:"max3",d:"2018-07-01",b:"xiaomi",t:"phone",a:"",s:"骁龙636",p:1599},
+  {n:"红米Note 7 Pro",c:"violet",d:"2019-03-18",b:"redmi",t:"phone",a:"",s:"骁龙675",p:1599},
+  {n:"红米K30 4G / POCO X2",c:"phoenix",d:"2019-12-10",b:"redmi",t:"phone",a:"POCO X2",p:1599},
+  {n:"Redmi K30",c:"k30",d:"2019-12-10",b:"redmi",t:"phone",a:"",s:"骁龙730G",p:1599},
+  {n:"红米Note 9 Pro Max",c:"excalibur",d:"2020-03-12",b:"redmi",t:"phone",a:"",p:1599},
+  {n:"红米Note 9 Pro 5G / 小米10T Lite",c:"gauguin",d:"2020-11-26",b:"redmi",t:"phone",a:"小米10T Lite",p:1599},
+  {n:"红米Note 10 Pro (China) / POCO X3 GT",c:"chopin",d:"2021-05-26",b:"redmi",t:"phone",a:"POCO X3 GT",p:1599},
+  {n:"红米Note11 Pro",c:"viva",d:"2021-10-28",b:"redmi",t:"phone",a:"",s:"天玑920",p:1599},
+  {n:"红米Note11 Pro / Pro+",c:"pissarro",d:"2021-10-28",b:"redmi",t:"phone",a:"",s:"天玑920",p:1599},
+  {n:"Redmi Note12 Pro极速版",c:"note12-pro极速版",d:"2022-12-27",b:"redmi",t:"phone",a:"",p:1599},
+  {n:"红米K70E / POCO X6 Pro 5G",c:"duchamp",d:"2023-11-29",b:"redmi",t:"phone",a:"POCO X6 Pro 5G",s:"天玑 8300-Ultra",p:1599},
+  {n:"Redmi Turbo 3",c:"turbo-3",d:"2024-04-10",b:"redmi",t:"phone",a:"",s:"骁龙8s Gen3",p:1599},
+  {n:"REDMI R70",c:"r70",d:"2026-04-14",b:"redmi",t:"phone",a:"",s:"虎贲T8300",p:1599},
+  {n:"Redmi K70至尊版",c:"k70至尊版",d:"2024-07-19",b:"redmi",t:"phone",a:"",s:"天玑9300+",p:1679},
+  {n:"小米4S",c:"aqua",d:"2016-02-24",b:"xiaomi",t:"phone",a:"",p:1699},
+  {n:"小米5S Plus",c:"natrium",d:"2016-09-27",b:"xiaomi",t:"phone",a:"",s:"骁龙821",p:1699},
+  {n:"Redmi K40S",c:"k40s",d:"2022-03-01",b:"redmi",t:"phone",a:"",p:1699},
+  {n:"Redmi Note 11E Pro",c:"note-11e-pro",d:"2022-03-01",b:"redmi",t:"phone",a:"",s:"骁龙695",p:1699},
+  {n:"Redmi Note 11T Pro+",c:"note-11t-pro",d:"2022-05-24",b:"redmi",t:"phone",a:"",p:1699},
+  {n:"小米CIVI 2 / 小米13 Lite",c:"ziyi",d:"2022-09-27",b:"xiaomi",t:"phone",a:"小米13 Lite",p:1699},
+  {n:"红米Note12 Pro+",c:"ruby",d:"2022-10-27",b:"redmi",t:"phone",a:"",p:1699},
+  {n:"红米Note12 Pro 4G",c:"sweet_k6a",d:"2023-04-11",b:"redmi",t:"phone",a:"",p:1699},
+  {n:"红米Note14 Pro+",c:"amethyst",d:"2024-09-26",b:"redmi",t:"phone",a:"",s:"骁龙7s Gen3",p:1699},
+  {n:"REDMI Turbo 4 Pro",c:"turbo-4-pro",d:"2025-04-24",b:"redmi",t:"phone",a:"",s:"骁龙8s Gen4",p:1699},
+  {n:"小米Note 3",c:"jason",d:"2017-09-12",b:"xiaomi",t:"phone",a:"",s:"骁龙660",p:1769},
+  {n:"小米CC9 / 小米9 Lite",c:"pyxis",d:"2019-07-02",b:"xiaomi",t:"phone",a:"小米9 Lite",s:"骁龙710",p:1799},
+  {n:"Redmi K60E",c:"k60e",d:"2022-12-27",b:"redmi",t:"phone",a:"",p:1799},
+  {n:"红米Note15 Pro+ / POCO M8 Pro",c:"flourite",d:"2025-08-21",b:"redmi",t:"phone",a:"POCO M8 Pro",s:"骁龙7s Gen4",p:1799},
+  {n:"红米平板2 Pro / POCO Pad M1",c:"flute",d:"2025-09-24",b:"redmi",t:"tablet",a:"POCO Pad M1",p:1799},
+  {n:"小米6",c:"sagit",d:"2017-04-28",b:"xiaomi",t:"phone",a:"",s:"骁龙835",p:1899},
+  {n:"Redmi Note 11 Pro+",c:"note-11-pro",d:"2021-10-28",b:"redmi",t:"phone",a:"",s:"天玑920",p:1899},
+  {n:"Redmi Note12 Turbo",c:"note12-turbo",d:"2023-03-28",b:"redmi",t:"phone",a:"",s:"骁龙7+ Gen2",p:1899},
+  {n:"红米Note13 Pro+ 5G",c:"zircon",d:"2023-09-21",b:"redmi",t:"phone",a:"",p:1899},
+  {n:"小米3 移动版",c:"pisces",d:"2013-09-05",b:"xiaomi",t:"phone",a:"",p:1999},
+  {n:"小米3 / 小米4",c:"cancro",d:"2014-07-22",b:"xiaomi",t:"phone",a:"",p:1999},
+  {n:"POCO F1",c:"beryllium",d:"2018-08-22",b:"poco",t:"phone",a:"",p:1999},
+  {n:"小米9 SE",c:"grus",d:"2019-02-20",b:"xiaomi",t:"phone",a:"",s:"骁龙712",p:1999},
+  {n:"红米K20 / 小米9T 印度版",c:"davinciin",d:"2019-05-28",b:"redmi",t:"phone",a:"小米9T",s:"骁龙730",p:1999},
+  {n:"红米K20 / 小米9T",c:"davinci",d:"2019-05-28",b:"redmi",t:"phone",a:"小米9T",s:"骁龙730",p:1999},
+  {n:"红米K30 5G",c:"picasso",d:"2019-12-10",b:"redmi",t:"phone",a:"",p:1999},
+  {n:"小米10青春版",c:"10青春版",d:"2020-04-27",b:"xiaomi",t:"phone",a:"",p:1999},
+  {n:"红米K30 至尊纪念版",c:"cezanne",d:"2020-08-11",b:"redmi",t:"phone",a:"",p:1999},
+  {n:"红米K40 / POCO F3",c:"alioth",d:"2021-02-25",b:"redmi",t:"phone",a:"POCO F3",s:"骁龙870",p:1999},
+  {n:"红米K40 游戏增强版 / POCO F3 GT",c:"ares",d:"2021-04-27",b:"redmi",t:"phone",a:"POCO F3 GT",s:"天玑1200",p:1999},
+  {n:"小米平板5",c:"nabu",d:"2021-08-10",b:"xiaomi",t:"tablet",a:"",p:1999},
+  {n:"小米CIVI",c:"mona",d:"2021-09-27",b:"xiaomi",t:"phone",a:"",p:1999},
+  {n:"小米平板6",c:"pipa",d:"2023-04-18",b:"xiaomi",t:"tablet",a:"",p:1999},
+  {n:"Redmi Note 13 Pro+",c:"note-13-pro",d:"2023-09-21",b:"redmi",t:"phone",a:"",p:1999},
+  {n:"红米K70 / POCO F6 Pro",c:"vermeer",d:"2023-11-29",b:"redmi",t:"phone",a:"POCO F6 Pro",s:"骁龙8 Gen2",p:1999},
+  {n:"小米平板7 / POCO Pad X1",c:"uke",d:"2024-10-29",b:"xiaomi",t:"tablet",a:"POCO Pad X1",p:1999},
+  {n:"红米K80 / POCO F7 Pro",c:"zorn",d:"2024-11-27",b:"redmi",t:"phone",a:"POCO F7 Pro",s:"骁龙8 Gen3",p:1999},
+  {n:"Redmi 10X Pro",c:"10x-pro",d:"2020-05-26",b:"redmi",t:"phone",a:"",p:2099},
+  {n:"红米K50",c:"rubens",d:"2022-03-01",b:"redmi",t:"phone",a:"",p:2099},
+  {n:"红米K60 / POCO F5 Pro",c:"mondrian",d:"2022-12-27",b:"redmi",t:"phone",a:"POCO F5 Pro",p:2099},
+  {n:"小米CIVI3",c:"yuechu",d:"2023-05-25",b:"xiaomi",t:"phone",a:"",p:2099},
+  {n:"小米CIVI 4 Pro / 小米14 Civi",c:"chenfeng",d:"2024-03-21",b:"xiaomi",t:"phone",a:"小米14 Civi",s:"骁龙8s Gen3",p:2099},
+  {n:"红米K30S 至尊纪念版 / 小米10T / 10T Pro",c:"apollo",d:"2020-10-27",b:"redmi",t:"phone",a:"小米10T",s:"骁龙865",p:2199},
+  {n:"红米Turbo5 / POCO X8 Pro",c:"klee",d:"2026-01-29",b:"redmi",t:"phone",a:"POCO X8 Pro",s:"天玑8500-Ultra",p:2199},
+  {n:"红米Turbo5 Max / POCO X8 Pro Max",c:"dash",d:"2026-01-29",b:"redmi",t:"phone",a:"POCO X8 Pro Max",s:"天玑9500s",p:2199},
+  {n:"小米Note 2",c:"scorpio",d:"2016-10-25",b:"xiaomi",t:"phone",a:"",s:"骁龙821",p:2299},
+  {n:"小米MIX 2",c:"chiron",d:"2017-09-15",b:"xiaomi",t:"phone",a:"",s:"骁龙835",p:2299},
+  {n:"小米8",c:"dipper",d:"2018-06-05",b:"xiaomi",t:"phone",a:"",s:"骁龙845",p:2299},
+  {n:"小米CIVI 1S",c:"zijin",d:"2022-04-21",b:"xiaomi",t:"phone",a:"",p:2299},
+  {n:"小米平板8",c:"yupei",d:"2025-09-25",b:"xiaomi",t:"tablet",a:"",p:2299},
+  {n:"Redmi K50至尊版",c:"k50至尊版",d:"2022-08-11",b:"redmi",t:"phone",a:"",p:2327},
+  {n:"小米10S",c:"thyme",d:"2021-03-10",b:"xiaomi",t:"phone",a:"",s:"骁龙870",p:2399},
+  {n:"小米12S",c:"mayfly",d:"2022-07-04",b:"xiaomi",t:"phone",a:"",p:2399},
+  {n:"红米K80 至尊版",c:"dali",d:"2025-06-26",b:"redmi",t:"phone",a:"",s:"天玑9400+",p:2399},
+  {n:"红米K20 Pro / 小米9T Pro",c:"raphael",d:"2019-05-28",b:"redmi",t:"phone",a:"小米9T Pro",s:"骁龙855",p:2499},
+  {n:"红米K20 Pro 印度版",c:"raphaelin",d:"2019-05-28",b:"redmi",t:"phone",a:"",p:2499},
+  {n:"红米K20 Pro 尊享版",c:"raphaels",d:"2019-09-19",b:"redmi",t:"phone",a:"",p:2499},
+  {n:"红米K30 Pro / 变焦版 / POCO F2 Pro",c:"lmi",d:"2020-03-24",b:"redmi",t:"phone",a:"POCO F2 Pro",p:2499},
+  {n:"红米K40 Pro / Pro+ / 小米11i / 小米11X Pro",c:"haydn",d:"2021-02-25",b:"redmi",t:"phone",a:"小米11i",s:"骁龙888",p:2499},
+  {n:"小米平板5 Pro (WiFi)",c:"elish",d:"2021-08-10",b:"xiaomi",t:"tablet",a:"",p:2499},
+  {n:"小米平板5 Pro (5G)",c:"enuma",d:"2021-08-10",b:"xiaomi",t:"tablet",a:"",p:2499},
+  {n:"小米12S Pro",c:"unicorn",d:"2022-07-04",b:"xiaomi",t:"phone",a:"",p:2499},
+  {n:"小米平板6 Pro",c:"liuqin",d:"2023-04-18",b:"xiaomi",t:"tablet",a:"",p:2499},
+  {n:"小米平板7 Pro",c:"muyu",d:"2024-10-29",b:"xiaomi",t:"tablet",a:"",p:2499},
+  {n:"小米Civi5 Pro",c:"luming",d:"2025-05-22",b:"xiaomi",t:"phone",a:"",s:"骁龙8s Gen4",p:2499},
+  {n:"小米MIX 2S",c:"polaris",d:"2018-03-01",b:"xiaomi",t:"phone",a:"",s:"骁龙845",p:2599},
+  {n:"小米CC9美图定制版",c:"cc9美图定制版",d:"2019-07-02",b:"xiaomi",t:"phone",a:"",s:"骁龙710",p:2599},
+  {n:"小米12X",c:"psyche",d:"2021-12-28",b:"xiaomi",t:"phone",a:"",p:2599},
+  {n:"Redmi K60至尊版",c:"k60至尊版",d:"2023-08-14",b:"redmi",t:"phone",a:"",s:"天玑9200+",p:2599},
+  {n:"红米K90 / POCO F8 Pro",c:"annibale",d:"2025-10-23",b:"redmi",t:"phone",a:"POCO F8 Pro",s:"骁龙8 至尊版",p:2599},
+  {n:"小米8 Lite",c:"platina",d:"2018-09-19",b:"xiaomi",t:"phone",a:"",p:2699},
+  {n:"小米11",c:"venus",d:"2020-12-22",b:"xiaomi",t:"phone",a:"",s:"骁龙888",p:2699},
+  {n:"小米14",c:"houji",d:"2023-10-26",b:"xiaomi",t:"phone",a:"",s:"骁龙8 Gen3",p:2699},
+  {n:"小米CC9 Pro / 小米Note 10",c:"tucana",d:"2019-11-05",b:"xiaomi",t:"phone",a:"小米Note 10",s:"骁龙730G",p:2799},
+  {n:"小米13",c:"fuxi",d:"2022-12-11",b:"xiaomi",t:"phone",a:"",s:"骁龙8 Gen2",p:2799},
+  {n:"红米K平板 / 小米平板Mini",c:"turner",d:"2025-06-26",b:"redmi",t:"tablet",a:"小米平板Mini",p:2799},
+  {n:"REDMI K90至尊版",c:"k90至尊版",d:"2026-06-30",b:"redmi",t:"phone",a:"",s:"骁龙8 至尊版",p:2799},
+  {n:"红米K80 Pro / POCO F7 Ultra",c:"miro",d:"2024-11-27",b:"redmi",t:"phone",a:"POCO F7 Ultra",s:"骁龙8 至尊版",p:2849},
+  {n:"小米平板8 Pro",c:"piano",d:"2025-09-25",b:"xiaomi",t:"tablet",a:"",p:2899},
+  {n:"小米MIX",c:"lithium",d:"2016-10-25",b:"xiaomi",t:"phone",a:"",s:"骁龙821",p:2999},
+  {n:"小米8屏幕指纹版",c:"8屏幕指纹版",d:"2018-09-19",b:"xiaomi",t:"phone",a:"",s:"骁龙845 AIE",p:2999},
+  {n:"小米9",c:"cepheus",d:"2019-02-20",b:"xiaomi",t:"phone",a:"",s:"骁龙855",p:2999},
+  {n:"红米K50 Pro",c:"matisse",d:"2022-03-01",b:"redmi",t:"phone",a:"",p:2999},
+  {n:"小米12 Pro 天玑版",c:"daumier",d:"2022-07-21",b:"xiaomi",t:"phone",a:"",p:2999},
+  {n:"小米平板5 Pro 12.4",c:"dagu",d:"2022-08-11",b:"xiaomi",t:"tablet",a:"",p:2999},
+  {n:"红米K90 Max",c:"prague",d:"2026-04-21",b:"redmi",t:"phone",a:"",s:"天玑9500",p:2999},
+  {n:"小米17T",c:"chagall",d:"2026-06-08",b:"xiaomi",t:"phone",a:"",s:"天玑8500-Ultra",p:2999},
+  {n:"小米平板7S Pro 12.5",c:"violin",d:"2025-06-26",b:"xiaomi",t:"tablet",a:"",p:3099},
+  {n:"小米8 Pro 屏幕指纹版",c:"equuleus",d:"2018-05-31",b:"xiaomi",t:"phone",a:"",p:3199},
+  {n:"小米MIX 3",c:"perseus",d:"2018-10-25",b:"xiaomi",t:"phone",a:"",s:"骁龙845 AIE",p:3299},
+  {n:"小米MIX 3 5G",c:"andromeda",d:"2019-02-24",b:"xiaomi",t:"phone",a:"",p:3299},
+  {n:"红米K50 电竞版 / POCO F4 GT",c:"ingres",d:"2022-02-16",b:"redmi",t:"phone",a:"POCO F4 GT",s:"骁龙8 Gen1",p:3299},
+  {n:"红米K60 Pro",c:"socrates",d:"2022-12-27",b:"redmi",t:"phone",a:"",p:3299},
+  {n:"红米K70 Pro",c:"manet",d:"2023-11-29",b:"redmi",t:"phone",a:"",s:"骁龙8 Gen3",p:3299},
+  {n:"小米平板6S Pro 12.4",c:"sheng",d:"2024-02-22",b:"xiaomi",t:"tablet",a:"",p:3299},
+  {n:"小米10",c:"umi",d:"2020-02-13",b:"xiaomi",t:"phone",a:"",s:"骁龙865",p:3349},
+  {n:"小米11 Pro / Ultra",c:"star",d:"2021-03-29",b:"xiaomi",t:"phone",a:"",p:3399},
+  {n:"小米平板6 Max",c:"yudi",d:"2023-08-14",b:"xiaomi",t:"tablet",a:"",p:3599},
+  {n:"小米15",c:"dada",d:"2024-10-29",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版",p:3599},
+  {n:"小米8 透明探索版",c:"ursa",d:"2018-07-01",b:"xiaomi",t:"phone",a:"",s:"骁龙845",p:3699},
+  {n:"小米9 Pro 5G",c:"crux",d:"2019-09-24",b:"xiaomi",t:"phone",a:"",p:3699},
+  {n:"小米9 Pro",c:"9-pro",d:"2019-09-24",b:"xiaomi",t:"phone",a:"",s:"骁龙855 Plus",p:3699},
+  {n:"小米12",c:"cupid",d:"2021-12-28",b:"xiaomi",t:"phone",a:"",p:3699},
+  {n:"小米12 Lite",c:"taoyao",d:"2022-07-04",b:"xiaomi",t:"phone",a:"",p:3699},
+  {n:"小米10 Lite",c:"monet",d:"2020-03-27",b:"xiaomi",t:"phone",a:"",p:3999},
+  {n:"小米11 Lite",c:"courbet",d:"2021-03-29",b:"xiaomi",t:"phone",a:"",p:3999},
+  {n:"红米K90 Pro Max / POCO F8 Ultra",c:"myron",d:"2025-10-23",b:"redmi",t:"phone",a:"POCO F8 Ultra",s:"骁龙8 至尊版Gen5",p:3999},
+  {n:"小米17T Pro",c:"warhol",d:"2026-06-08",b:"xiaomi",t:"phone",a:"",s:"天玑9500",p:3999},
+  {n:"小米15 Pro",c:"haotian",d:"2024-10-29",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版",p:4099},
+  {n:"小米13 Ultra",c:"ishtar",d:"2023-04-18",b:"xiaomi",t:"phone",a:"",s:"骁龙8 Gen2",p:4259},
+  {n:"小米11 Ultra",c:"11-ultra",d:"2021-03-29",b:"xiaomi",t:"phone",a:"",p:4289},
+  {n:"小米14 Ultra",c:"aurora",d:"2024-02-22",b:"xiaomi",t:"phone",a:"",s:"骁龙8 Gen3",p:4299},
+  {n:"小米17",c:"pudding",d:"2025-09-25",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版Gen5",p:4499},
+  {n:"小米13 Pro",c:"nuwa",d:"2022-12-11",b:"xiaomi",t:"phone",a:"",s:"骁龙8 Gen2",p:4599},
+  {n:"小米14 Pro",c:"shennong",d:"2023-10-26",b:"xiaomi",t:"phone",a:"",s:"骁龙8 Gen3",p:4599},
+  {n:"小米12 Pro",c:"zeus",d:"2021-12-28",b:"xiaomi",t:"phone",a:"",p:4699},
+  {n:"小米17 Max",c:"byron",d:"2026-05-21",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版Gen5",p:4799},
+  {n:"小米10 Pro",c:"cmi",d:"2020-02-13",b:"xiaomi",t:"phone",a:"",s:"骁龙865",p:4999},
+  {n:"小米10 至尊纪念版",c:"cas",d:"2020-08-11",b:"xiaomi",t:"phone",a:"",p:4999},
+  {n:"小米MIX 4",c:"mix-4",d:"2021-08-10",b:"xiaomi",t:"phone",a:"",p:4999},
+  {n:"小米14 Pro 钛金属版",c:"shennong_t",d:"2024-02-22",b:"xiaomi",t:"phone",a:"",p:4999},
+  {n:"小米MIX Flip 2",c:"bixi",d:"2025-06-26",b:"xiaomi",t:"fold",a:"",s:"骁龙8 至尊版",p:4999},
+  {n:"小米17 Pro",c:"pandora",d:"2025-09-25",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版Gen5",p:4999},
+  {n:"小米15S Pro",c:"dijun",d:"2025-05-22",b:"xiaomi",t:"phone",a:"",s:"玄戒O1",p:5499},
+  {n:"小米12S Ultra",c:"thor",d:"2022-07-04",b:"xiaomi",t:"phone",a:"",p:5999},
+  {n:"小米MIX Fold 3",c:"babylon",d:"2023-08-14",b:"xiaomi",t:"fold",a:"",p:5999},
+  {n:"小米MIX Flip",c:"ruyi",d:"2024-07-19",b:"xiaomi",t:"fold",a:"",s:"骁龙8 Gen3",p:5999},
+  {n:"小米15 Ultra",c:"xuanyuan",d:"2025-02-27",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版",p:5999},
+  {n:"小米17 Pro Max",c:"popsicle",d:"2025-09-25",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版Gen5",p:5999},
+  {n:"小米17 Ultra",c:"nezha",d:"2025-12-25",b:"xiaomi",t:"phone",a:"",s:"骁龙8 至尊版Gen5",p:6999},
+  {n:"小米MIX Fold 4",c:"goku",d:"2024-07-19",b:"xiaomi",t:"fold",a:"",s:"骁龙8 Gen3",p:7999},
+  {n:"小米MIX Fold 2",c:"zizhan",d:"2022-08-11",b:"xiaomi",t:"fold",a:"",p:8999},
+  {n:"小米MIX Fold",c:"cetus",d:"2021-03-30",b:"xiaomi",t:"fold",a:"",s:"骁龙888",p:9999},
+  {n:"小米MIX Alpha",c:"mix-alpha",d:"2019-09-24",b:"xiaomi",t:"phone",a:"",s:"骁龙855 Plus",p:19999},
+  {n:"REDMI 15R",c:"15r",d:"2025-09-17",b:"redmi",t:"phone",a:"",s:"骁龙6s Gen3",p:null},
+  {n:"REDMI Note 15R",c:"note-15r",d:"2025-08-22",b:"redmi",t:"phone",a:"",s:"骁龙6s Gen3",p:null},
+  {n:"POCO X7 Pro",c:"x7-pro",d:"2025-01-09",b:"poco",t:"phone",a:"",s:"天玑8400-Ultra",p:null},
+  {n:"红米Note 6 Pro",c:"note-6-pro",d:"2018-11-01",b:"redmi",t:"phone",a:"",s:"骁龙636",p:null}
+];
+
+const TIERS = [
+{"label": "入门级", "subtitle": "¥0 - 999", "color": "#4CAF50", "bg": "rgba(76,175,80,0.12)", "border": "rgba(76,175,80,0.35)", "lo": 0, "hi": 999, "count": 18},
+{"label": "进阶级", "subtitle": "¥1,000 - 1,999", "color": "#00BCD4", "bg": "rgba(0,188,212,0.12)", "border": "rgba(0,188,212,0.35)", "lo": 1000, "hi": 1999, "count": 56},
+{"label": "中端级", "subtitle": "¥2,000 - 2,999", "color": "#2196F3", "bg": "rgba(33,150,243,0.12)", "border": "rgba(33,150,243,0.35)", "lo": 2000, "hi": 2999, "count": 39},
+{"label": "高端级", "subtitle": "¥3,000 - 3,999", "color": "#9C27B0", "bg": "rgba(156,39,176,0.12)", "border": "rgba(156,39,176,0.35)", "lo": 3000, "hi": 3999, "count": 28},
+{"label": "旗舰级", "subtitle": "¥4,000 - 4,999", "color": "#FF9800", "bg": "rgba(255,152,0,0.12)", "border": "rgba(255,152,0,0.35)", "lo": 4000, "hi": 4999, "count": 13},
+{"label": "至尊级", "subtitle": "¥5,000 - 6,999", "color": "#F44336", "bg": "rgba(244,67,54,0.12)", "border": "rgba(244,67,54,0.35)", "lo": 5000, "hi": 6999, "count": 11},
+{"label": "典藏级", "subtitle": "¥7,000+", "color": "#FFD700", "bg": "rgba(255,215,0,0.10)", "border": "rgba(255,215,0,0.35)", "lo": 7000, "hi": 99999, "count": 4}
+];
+
+// ─── 当前筛选状态 ───
+let currentBrand = 'all';
+let currentType = 'all';
+
+// ─── 初始化 ───
+function init() {
+  renderAll();
+}
+
+// ─── 获取设备所属 tier index ───
+function getTierIndex(price) {
+  if (price === null || price === undefined) return -1;
+  if (price <= 999) return 0;
+  if (price <= 1999) return 1;
+  if (price <= 2999) return 2;
+  if (price <= 3999) return 3;
+  if (price <= 4999) return 4;
+  if (price <= 6999) return 5;
+  return 6;
+}
+
+// ─── 格式化价格 ───
+function formatPrice(p) {
+  if (p === null || p === undefined) return '暂无';
+  return '¥' + p.toLocaleString();
+}
+
+// ─── 品牌名映射 ───
+const brandNames = { xiaomi: '小米', redmi: '红米', poco: 'POCO' };
+const typeNames = { phone: '手机', tablet: '平板', fold: '折叠屏' };
+
+// ─── 渲染全部 ───
+function renderAll() {
+  let filtered = DEVICES;
+
+  if (currentBrand !== 'all') {
+    filtered = filtered.filter(d => d.b === currentBrand);
+  }
+  if (currentType !== 'all') {
+    filtered = filtered.filter(d => d.t === currentType);
+  }
+
+  // Group by tier
+  const grouped = {};
+  let unpriced = [];
+  filtered.forEach(d => {
+    const ti = getTierIndex(d.p);
+    if (ti === -1) { unpriced.push(d); return; }
+    if (!grouped[ti]) grouped[ti] = [];
+    grouped[ti].push(d);
+  });
+
+  let html = '';
+  let visibleCount = 0;
+
+  // Render unpriced devices first
+  if (unpriced.length > 0) {
+    visibleCount += unpriced.length;
+    html += '<div class="tier-section">';
+    html += '<div class="tier-header">';
+    html += '<div class="tier-badge" style="background:rgba(147,143,153,0.5);color:#fff">~</div>';
+    html += '<div class="tier-info"><h3 style="color:#938F99">待定价</h3><span>暂无首发价格</span></div>';
+    html += '<div class="tier-count">' + unpriced.length + ' 台</div>';
+    html += '</div>';
+    html += '<div class="device-grid">';
+    unpriced.forEach(d => {
+      html += '<div class="device-card tier--1" onclick="copyCodename(\'' + d.c + '\')" title="点击复制代号">';
+      html += '<div class="brand-dot dot-' + d.b + '"></div>';
+      html += '<div class="name">' + escapeHtml(d.n) + '</div>';
+      html += '<div class="codename">' + d.c + '</div>';
+      if (d.s) html += '<div class="soc">' + d.s + '</div>';
+      html += '<div class="price" style="color:#938F99">' + formatPrice(d.p) + '</div>';
+      html += '<div class="date">' + d.d + '</div>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+  }
+
+  TIERS.forEach((tier, ti) => {
+    const devs = grouped[ti] || [];
+    if (devs.length === 0) return;
+    visibleCount += devs.length;
+
+    html += '<div class="tier-section">';
+    html += '<div class="tier-header">';
+    html += '<div class="tier-badge" style="background:' + tier.border + ';color:#fff">' + (ti + 1) + '</div>';
+    html += '<div class="tier-info"><h3 style="color:' + tier.color + '">' + tier.label + '</h3><span>' + tier.subtitle + '</span></div>';
+    html += '<div class="tier-count">' + devs.length + ' 台</div>';
+    html += '</div>';
+    html += '<div class="device-grid">';
+
+    devs.forEach(d => {
+      html += '<div class="device-card tier-' + ti + '" onclick="copyCodename(\'' + d.c + '\')" title="点击复制代号">';
+      html += '<div class="brand-dot dot-' + d.b + '"></div>';
+      html += '<div class="name">' + escapeHtml(d.n) + '</div>';
+      html += '<div class="codename">' + d.c + '</div>';
+      if (d.s) html += '<div class="soc">' + d.s + '</div>';
+      html += '<div class="price" style="color:' + tier.color + '">' + formatPrice(d.p) + '</div>';
+      html += '<div class="date">' + d.d + '</div>';
+      html += '</div>';
+    });
+
+    html += '</div></div>';
+  });
+
+  document.getElementById('tierContainer').innerHTML = html;
+  document.getElementById('resultCount').textContent = '显示 ' + visibleCount + ' 台设备';
+  document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+
+  // Update stats
+  updateStats(filtered);
+}
+
+function updateStats(filtered) {
+  const stats = document.querySelectorAll('.stats-bar .stat-chip');
+  stats[1].querySelector('.num').textContent = filtered.length;
+  const prices = filtered.map(d => d.p).filter(p => p !== null).sort((a,b) => a-b);
+  if (prices.length > 0) {
+    stats[2].querySelector('.num').textContent = formatPrice(prices[0]);
+    stats[3].querySelector('.num').textContent = formatPrice(prices[prices.length-1]);
+    stats[4].querySelector('.num').textContent = formatPrice(prices[Math.floor(prices.length/2)]);
+  } else {
+    stats[2].querySelector('.num').textContent = '-';
+    stats[3].querySelector('.num').textContent = '-';
+    stats[4].querySelector('.num').textContent = '-';
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function copyCodename(code) {
+  navigator.clipboard.writeText(code).then(() => {
+    showToast('已复制: ' + code);
+  });
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ─── 筛选事件 ───
+document.getElementById('brandBar').addEventListener('click', function(e) {
+  if (e.target.classList.contains('filter-chip')) {
+    currentBrand = e.target.dataset.filter;
+    const chips = this.querySelectorAll('.filter-chip');
+    chips.forEach(c => {
+      c.classList.remove('active', 'xiaomi-active', 'redmi-active', 'poco-active');
+      if (c.dataset.filter === currentBrand) {
+        if (currentBrand === 'all') c.classList.add('active');
+        else c.classList.add(currentBrand + '-active');
+      }
+    });
+    renderAll();
+  }
+});
+
+document.getElementById('typeBar').addEventListener('click', function(e) {
+  if (e.target.classList.contains('filter-chip')) {
+    currentType = e.target.dataset.filter;
+    const chips = this.querySelectorAll('.filter-chip');
+    chips.forEach(c => {
+      c.classList.toggle('active', c.dataset.filter === currentType);
+    });
+    renderAll();
+  }
+});
+
+init();
+</script>
+
+</body>
+</html>
