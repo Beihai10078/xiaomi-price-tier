@@ -1829,23 +1829,13 @@ let sloganIdx = 0;
 const $sloganToast = document.getElementById('sloganToast');
 
 function showSloganToast() {
-  console.log('[slogan] showSloganToast triggered');
   const idx = Math.floor(Math.random() * slogans.length);
-  console.log('[slogan] idx=' + idx + ' text=' + slogans[idx]);
   $sloganToast.textContent = slogans[idx];
   $sloganToast.classList.add('show');
   setTimeout(() => { $sloganToast.classList.remove('show'); }, 3000);
 }
 
-const $subtitleLink = document.getElementById('subtitleLink');
-console.log('[slogan] $sloganToast:', $sloganToast);
-console.log('[slogan] $subtitleLink:', $subtitleLink);
-if ($subtitleLink) {
-  $subtitleLink.addEventListener('click', showSloganToast);
-  console.log('[slogan] event listener bound to subtitleLink');
-} else {
-  console.error('[slogan] subtitleLink NOT FOUND!');
-}
+document.getElementById('subtitleLink').addEventListener('click', showSloganToast);
 
 // ─── 关于弹窗 ───
 $aboutBtn.addEventListener('click', () => {
