@@ -814,7 +814,8 @@ footer a { color: var(--primary); text-decoration: none; }
   .lang-toggle,
   .about-toggle {
     position: static;
-    width: auto;
+    flex: 1;
+    min-width: 0;
     height: auto;
     padding: 7px 14px;
     margin-top: 4px;
@@ -914,16 +915,16 @@ footer a { color: var(--primary); text-decoration: none; }
     scrollbar-width: none;
     gap: 6px;
     padding: 2px 0;
-    justify-content: center;
+    justify-content: stretch;
   }
   .filter-bar-scroll::-webkit-scrollbar {
     display: none;
   }
   .filter-chip {
+    flex: 1;
     padding: 7px 14px;
     font-size: 13px;
     border-radius: 18px;
-    flex-shrink: 0;
   }
 
   /* 系列下拉 - 全宽 */
@@ -1860,26 +1861,43 @@ render();
 $search.focus();
 
 // ─── 口号通知弹窗 ───
-const slogans = [
-  '数字三民主义，机圈为公！',
-  '再创一个辉煌的安卓与AOSP！',
-  '让Miui再次伟大！',
-  '让澎湃再次伟大！',
-  '让Miui再次澎湃！',
-  '数字三民主义与GitHub并行！',
-  '數字三民主義，機圈為公！',
-  '再創一個輝煌的安卓與AOSP！',
-  '讓Miui再次偉大！',
-  '讓澎湃再次偉大！',
-  '讓Miui再次澎湃！',
-  '數字三民主義與GitHub並行！'
-];
+const slogans = {
+  zh: [
+    '数字三民主义，机圈为公！',
+    '再创一个辉煌的安卓与AOSP！',
+    '让Miui再次伟大！',
+    '让澎湃再次伟大！',
+    '让Miui再次澎湃！',
+    '数字三民主义与GitHub并行！',
+    '數字三民主義，機圈為公！',
+    '再創一個輝煌的安卓與AOSP！',
+    '讓Miui再次偉大！',
+    '讓澎湃再次偉大！',
+    '讓Miui再次澎湃！',
+    '數字三民主義與GitHub並行！'
+  ],
+  en: [
+    'Three Principles of Digitalism — for the code, by the code!',
+    'Make Android & AOSP Glorious Again!',
+    'Make MIUI Great Again!',
+    'Make HyperOS Great Again!',
+    'Let MIUI Hyper Again!',
+    'Digital Three Principles × GitHub — Stars Unite!',
+    'Fork the Revolution, Merge the Future!',
+    'Open Source is the Only Way!',
+    'One Repo, One Community, One Kernel!',
+    'Push Code, Not Boundaries!',
+    'From XDA to Mars — One Commit at a Time!',
+    'Bootloader Unlocked, Destiny Unlocked!'
+  ]
+};
 let sloganIdx = 0;
 const $sloganToast = document.getElementById('sloganToast');
 
 function showSloganToast() {
-  const idx = Math.floor(Math.random() * slogans.length);
-  $sloganToast.textContent = slogans[idx];
+  const list = slogans[lang] || slogans.zh;
+  const idx = Math.floor(Math.random() * list.length);
+  $sloganToast.textContent = list[idx];
   $sloganToast.classList.add('show');
   setTimeout(() => { $sloganToast.classList.remove('show'); }, 3000);
 }
