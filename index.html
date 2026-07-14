@@ -82,6 +82,7 @@ header .logo-icon {
   flex-shrink: 0;
   cursor: pointer;
 }
+.logo-mobile { display: none; }
 header h1 {
   font-size: 34px;
   font-weight: 700;
@@ -733,6 +734,12 @@ footer a { color: var(--primary); text-decoration: none; }
   min-width: 0;
   margin-bottom: 0;
 }
+/* 桌面端：品牌栏与类型栏之间的分栏竖线 */
+.filter-section-inline:first-child {
+  border-right: 1px solid var(--outline-variant);
+  padding-right: 20px;
+  margin-right: 10px;
+}
 .filter-bar-scroll {
   /* PC 端：与 .filter-bar 行为一致 */
   display: flex;
@@ -775,6 +782,42 @@ footer a { color: var(--primary); text-decoration: none; }
   box-shadow: 0 0 0 3px rgba(103,80,164,0.2);
 }
 
+/* ─── 工具按钮栏（移动端显示在筛选区顶部）─── */
+.util-pill-bar {
+  display: none;
+}
+.util-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  padding: 7px 14px;
+  border-radius: 18px;
+  border: 1.5px solid var(--outline-variant);
+  background: transparent;
+  color: var(--on-surface-dim);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.util-pill-btn svg {
+  width: 16px;
+  height: 16px;
+}
+.util-pill-btn:hover {
+  background: var(--surface2);
+  border-color: var(--outline);
+}
+[data-action="about"].util-pill-btn {
+  font-weight: 600;
+  font-style: italic;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
 /* ─── 移动端响应式 ─── */
 @media (max-width: 600px) {
   /* Container */
@@ -801,66 +844,48 @@ footer a { color: var(--primary); text-decoration: none; }
     width: 36px;
     height: 36px;
   }
+  .logo-desktop { display: none !important; }
+  .logo-mobile {
+    display: block !important;
+    width: 240px !important;
+    height: auto !important;
+    max-width: 100%;
+  }
   header h1 {
     font-size: 22px;
   }
   header p {
     font-size: 12px;
-    margin-top: 8px;
+    margin-top: 10px;
   }
 
-  /* 按钮移到副标题下方 - pill 风格 */
+  /* 按钮组移至筛选区顶部，header 中原按钮隐藏 */
   .theme-toggle,
   .lang-toggle,
   .about-toggle {
-    position: static;
-    flex: 1;
-    min-width: 0;
-    height: auto;
-    padding: 7px 14px;
-    margin-top: 4px;
-    border-radius: 18px;
-    border: 1.5px solid var(--outline-variant);
-    background: transparent;
-    color: var(--on-surface-dim);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+    display: none !important;
   }
-  .theme-toggle:hover,
-  .lang-toggle:hover,
-  .about-toggle:hover {
-    background: var(--surface2);
-    border-color: var(--outline);
-  }
-  .theme-toggle svg {
-    width: 16px;
-    height: 16px;
-  }
-  .lang-toggle {
-    font-size: 13px;
-  }
-  .about-toggle {
-    font-size: 13px;
-    font-weight: 600;
-    font-style: italic;
-    font-family: 'Georgia', 'Times New Roman', serif;
+
+  .util-pill-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
   }
 
   /* Stats bar - 紧凑数字 */
   .stats-bar {
     gap: 6px;
     margin-bottom: 12px;
+    flex-wrap: nowrap;
+    justify-content: stretch;
   }
   .stat-chip {
     padding: 6px 10px;
     font-size: 12px;
     border-radius: 8px;
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
   }
   .stat-chip .num {
     font-size: 15px;
@@ -904,9 +929,12 @@ footer a { color: var(--primary); text-decoration: none; }
     gap: 6px;
     margin-bottom: 6px;
   }
-  .filter-section-inline {
+  .filter-section-inline, .filter-section-inline:first-child {
     flex: 1;
     margin-bottom: 0;
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
   }
   .filter-bar-scroll {
     flex-wrap: nowrap;
@@ -1088,7 +1116,7 @@ footer a { color: var(--primary); text-decoration: none; }
 <body>
 
 <header>
-  <a href="https://www.mi.com" target="_blank" rel="noopener" class="logo-link"><img src="favicon.png" alt="小米官网" class="logo-icon"></a>
+  <a href="https://www.mi.com" target="_blank" rel="noopener" class="logo-link"><img src="favicon.png" alt="小米官网" class="logo-icon logo-desktop"><img src="xiaomi-logo-text.png" alt="小米官网" class="logo-icon logo-mobile"></a>
   <div class="header-text">
     <h1><a href="https://www.mi.com/shop/search?keyword=%E6%89%8B%E6%9C%BA" target="_blank" rel="noopener" data-i18n="page_title">米系设备价格、代号查询</a></h1>
     <p><span class="subtitle-link" id="subtitleLink" data-i18n="subtitle">Xiaomi / Redmi / POCO — 价格天梯 &amp; 代号速查</span></p>
@@ -1111,6 +1139,21 @@ footer a { color: var(--primary); text-decoration: none; }
 
   <div class="sticky-sentinel" id="stickySentinel"></div>
   <div class="filter-sticky-wrapper" id="filterSticky">
+    <div class="util-pill-bar">
+      <button class="util-pill-btn" data-action="theme" title="切换主题">
+        <svg class="util-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="6.5" x2="12" y2="1.5"/><line x1="14.75" y1="7.24" x2="17.25" y2="2.91"/><line x1="16.76" y1="9.25" x2="21.09" y2="6.75"/><line x1="17.5" y1="12" x2="22.5" y2="12"/><line x1="16.76" y1="14.75" x2="21.09" y2="17.25"/><line x1="14.75" y1="16.76" x2="17.25" y2="21.09"/><line x1="12" y1="17.5" x2="12" y2="22.5"/><line x1="9.25" y1="16.76" x2="6.75" y2="21.09"/><line x1="7.24" y1="14.75" x2="2.91" y2="17.25"/><line x1="6.5" y1="12" x2="1.5" y2="12"/><line x1="7.24" y1="9.25" x2="2.91" y2="6.75"/><line x1="9.25" y1="7.24" x2="6.75" y2="2.91"/></svg>
+        <svg class="util-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="util-label">主题</span>
+      </button>
+      <button class="util-pill-btn" data-action="lang" title="切换语言">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="util-label">中文</span>
+      </button>
+      <button class="util-pill-btn" data-action="about" title="关于">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span class="util-label">关于</span>
+      </button>
+    </div>
     <div class="filter-row">
       <div class="filter-section filter-section-inline">
         <div class="filter-bar filter-bar-scroll" id="brandBar">
@@ -1172,7 +1215,7 @@ footer a { color: var(--primary); text-decoration: none; }
     <h2 data-i18n="about_title">关于</h2>
     <p data-i18n="about_desc">米系设备价格与代号速查工具。</p>
     <div class="about-meta">
-      <div class="about-meta-row"><span class="about-label" data-i18n="about_version">版本</span><span class="about-value">DC 1.5</span></div>
+      <div class="about-meta-row"><span class="about-label" data-i18n="about_version">版本</span><span class="about-value">DC 1.7 V6.4</span></div>
       <div class="about-meta-row"><span class="about-label" data-i18n="about_repo">项目主页</span><span class="about-value"><a href="https://github.com/Beihai10078/xiaomi-price-tier" target="_blank" rel="noopener">GitHub</a></span></div>
       <div class="about-meta-row"><span class="about-label" data-i18n="about_source">数据来源</span><span class="about-value"><a href="https://miuiver.com/xiaomi-device-codename/" target="_blank">MIUI版本</a></span></div>
       <div class="about-meta-row"><span class="about-label" data-i18n="about_updated">最后更新</span><span class="about-value">2026-07</span></div>
@@ -1206,6 +1249,7 @@ const I18N = {
   source: { zh: '数据来源', en: 'Data source' },
   updated: { zh: '最后更新', en: 'Last updated' },
   theme: { zh: '切换主题', en: 'Toggle theme' },
+  util_theme: { zh: '主题', en: 'Theme' },
   lang_title: { zh: '切换语言', en: 'Toggle language' },
   lang_btn: { zh: '中', en: 'EN' },
   copied: { zh: '已复制 ', en: 'Copied ' },
@@ -1239,9 +1283,9 @@ function applyLanguage() {
     if (!I18N[k]) return;
     const v = I18N[k][lang];
     if (BTNS_TEXT.includes(el)) {
-      if (el === $langBtn) { el.textContent = v; el.title = t('lang_title'); }
-      else if (el === $themeBtn) el.title = v;
-      else if (el === $aboutBtn) { el.textContent = 'i'; el.title = t('about_btn'); }
+      if (el === $langBtn) { el.textContent = v; el.title = t('lang_title'); const $ll = $utilLang.querySelector('.util-label'); if ($ll) $ll.textContent = v; $utilLang.title = t('lang_title'); }
+      else if (el === $themeBtn) { el.title = v; const $tl = $utilBar.querySelector('.util-label'); if ($tl) $tl.textContent = t('util_theme'); }
+      else if (el === $aboutBtn) { el.textContent = 'i'; el.title = t('about_btn'); const $al = $utilAbout.querySelector('.util-label'); if ($al) $al.textContent = t('about_btn'); $utilAbout.title = t('about_btn'); }
     } else if (el.tagName === 'INPUT') {
       el.placeholder = v;
     } else {
@@ -1813,12 +1857,31 @@ function setTheme(isLight, animate) {
   document.body.classList.toggle('light', isLight);
   $sunIcon.style.display = isLight ? 'none' : '';
   $moonIcon.style.display = isLight ? '' : 'none';
+  $utilSun.style.display = isLight ? 'none' : '';
+  $utilMoon.style.display = isLight ? '' : 'none';
   if (animate && $themeBtn) {
     $themeBtn.classList.add('spinning');
     setTimeout(() => $themeBtn.classList.remove('spinning'), 520);
   }
   localStorage.setItem(themeKey, isLight ? 'light' : 'dark');
 }
+
+// ─── 移动端工具按钮事件委托 ───
+const $utilBar = document.querySelector('.util-pill-bar');
+const $utilSun = $utilBar.querySelector('.util-sun');
+const $utilMoon = $utilBar.querySelector('.util-moon');
+const $utilLang = $utilBar.querySelector('[data-action="lang"]');
+const $utilAbout = $utilBar.querySelector('[data-action="about"]');
+
+$utilBar.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  if (action === 'theme') $themeBtn.click();
+  else if (action === 'lang') $langBtn.click();
+  else if (action === 'about') $aboutBtn.click();
+});
+
 $themeBtn.addEventListener('click', () => {
   setTheme(!document.body.classList.contains('light'), true);
 });
@@ -1925,9 +1988,12 @@ document.addEventListener('keydown', (e) => {
 
 // ─── 返回顶部 ───
 const $backToTop = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-  $backToTop.classList.toggle('visible', window.scrollY > 400);
-});
+function updateBackToTop() {
+  const cardCount = document.querySelectorAll('.device-card').length;
+  $backToTop.classList.toggle('visible', window.scrollY > 0 && cardCount >= 5);
+}
+window.addEventListener('scroll', updateBackToTop);
+updateBackToTop();
 $backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
