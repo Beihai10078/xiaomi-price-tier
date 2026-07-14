@@ -660,7 +660,20 @@ footer a { color: var(--primary); text-decoration: none; }
 .device-card { animation: fadeIn 0.25s ease both; }
 
 @media (max-width: 600px) {
+  header { padding: 24px 0 20px; }
   header h1 { font-size: 26px; }
+  header .header-text { padding-right: 148px; }
+  .theme-toggle, .lang-toggle, .about-toggle {
+    width: 36px;
+    height: 36px;
+    top: 16px;
+  }
+  .theme-toggle { right: 8px; }
+  .lang-toggle { right: 52px; }
+  .about-toggle { right: 96px; }
+  .theme-toggle svg { width: 18px; height: 18px; }
+  .lang-toggle { font-size: 12px; }
+  .about-toggle { font-size: 14px; }
   .device-card {
     grid-template-columns: 1fr auto;
     gap: 10px;
