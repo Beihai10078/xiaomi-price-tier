@@ -1047,7 +1047,7 @@ footer a { color: var(--primary); text-decoration: none; }
   <a href="https://www.mi.com" target="_blank" rel="noopener" class="logo-link"><img src="favicon.png" alt="小米官网" class="logo-icon"></a>
   <div class="header-text">
     <h1><a href="https://www.mi.com/shop/search?keyword=%E6%89%8B%E6%9C%BA" target="_blank" rel="noopener" data-i18n="page_title">米系设备价格、代号查询</a></h1>
-    <p><span class="subtitle-link" data-i18n="subtitle">Xiaomi / Redmi / POCO — 价格天梯 &amp; 代号速查</span></p>
+    <p><span class="subtitle-link" id="subtitleLink" data-i18n="subtitle">Xiaomi / Redmi / POCO — 价格天梯 &amp; 代号速查</span></p>
   </div>
   <button class="theme-toggle" id="themeBtn" data-i18n="theme" title="切换主题">
     <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="6.5" x2="12" y2="1.5"/><line x1="14.75" y1="7.24" x2="17.25" y2="2.91"/><line x1="16.76" y1="9.25" x2="21.09" y2="6.75"/><line x1="17.5" y1="12" x2="22.5" y2="12"/><line x1="16.76" y1="14.75" x2="21.09" y2="17.25"/><line x1="14.75" y1="16.76" x2="17.25" y2="21.09"/><line x1="12" y1="17.5" x2="12" y2="22.5"/><line x1="9.25" y1="16.76" x2="6.75" y2="21.09"/><line x1="7.24" y1="14.75" x2="2.91" y2="17.25"/><line x1="6.5" y1="12" x2="1.5" y2="12"/><line x1="7.24" y1="9.25" x2="2.91" y2="6.75"/><line x1="9.25" y1="7.24" x2="6.75" y2="2.91"/></svg>
@@ -1825,32 +1825,27 @@ const slogans = [
   '讓Miui再次澎湃！',
   '數字三民主義與GitHub並行！'
 ];
-const slogansEn = [
-  'Digital Three Principles — Phone Circle United!',
-  'Revive the Glory of Android & AOSP!',
-  'Make MIUI Great Again!',
-  'Make HyperOS Great Again!',
-  'Let MIUI Surge Once More!',
-  'Digital Three Principles × GitHub!',
-  'Digital Three Principles — Phone Circle United!',
-  'Revive the Glory of Android & AOSP!',
-  'Make MIUI Great Again!',
-  'Make HyperOS Great Again!',
-  'Let MIUI Surge Once More!',
-  'Digital Three Principles × GitHub!'
-];
 let sloganIdx = 0;
 const $sloganToast = document.getElementById('sloganToast');
 
 function showSloganToast() {
-  const pool = currentLang === 'en' ? slogansEn : slogans;
-  const idx = Math.floor(Math.random() * pool.length);
-  $sloganToast.textContent = pool[idx];
+  console.log('[slogan] showSloganToast triggered');
+  const idx = Math.floor(Math.random() * slogans.length);
+  console.log('[slogan] idx=' + idx + ' text=' + slogans[idx]);
+  $sloganToast.textContent = slogans[idx];
   $sloganToast.classList.add('show');
   setTimeout(() => { $sloganToast.classList.remove('show'); }, 3000);
 }
 
-document.querySelector('.subtitle-link').addEventListener('click', showSloganToast);
+const $subtitleLink = document.getElementById('subtitleLink');
+console.log('[slogan] $sloganToast:', $sloganToast);
+console.log('[slogan] $subtitleLink:', $subtitleLink);
+if ($subtitleLink) {
+  $subtitleLink.addEventListener('click', showSloganToast);
+  console.log('[slogan] event listener bound to subtitleLink');
+} else {
+  console.error('[slogan] subtitleLink NOT FOUND!');
+}
 
 // ─── 关于弹窗 ───
 $aboutBtn.addEventListener('click', () => {
