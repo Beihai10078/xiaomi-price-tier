@@ -1723,7 +1723,6 @@ function render() {
       </div>
     `).join('');
   }
-  updateBackToTop();
 }
 
 let toastTimer = null;
@@ -1906,9 +1905,9 @@ document.addEventListener('keydown', (e) => {
 
 // ─── 返回顶部 ───
 const $backToTop = document.getElementById('backToTop');
-function updateBackToTop() {
-  $backToTop.classList.toggle('visible', document.querySelectorAll('.device-card').length > 5);
-}
+window.addEventListener('scroll', () => {
+  $backToTop.classList.toggle('visible', window.scrollY > 400);
+});
 $backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
