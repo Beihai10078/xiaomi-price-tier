@@ -1825,12 +1825,27 @@ const slogans = [
   '讓Miui再次澎湃！',
   '數字三民主義與GitHub並行！'
 ];
+const slogansEn = [
+  'Digital Three Principles — Phone Circle United!',
+  'Revive the Glory of Android & AOSP!',
+  'Make MIUI Great Again!',
+  'Make HyperOS Great Again!',
+  'Let MIUI Surge Once More!',
+  'Digital Three Principles × GitHub!',
+  'Digital Three Principles — Phone Circle United!',
+  'Revive the Glory of Android & AOSP!',
+  'Make MIUI Great Again!',
+  'Make HyperOS Great Again!',
+  'Let MIUI Surge Once More!',
+  'Digital Three Principles × GitHub!'
+];
 let sloganIdx = 0;
 const $sloganToast = document.getElementById('sloganToast');
 
 function showSloganToast() {
-  const idx = Math.floor(Math.random() * slogans.length);
-  $sloganToast.textContent = slogans[idx];
+  const pool = currentLang === 'en' ? slogansEn : slogans;
+  const idx = Math.floor(Math.random() * pool.length);
+  $sloganToast.textContent = pool[idx];
   $sloganToast.classList.add('show');
   setTimeout(() => { $sloganToast.classList.remove('show'); }, 3000);
 }
