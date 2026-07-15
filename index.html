@@ -514,6 +514,85 @@ header p {
 .empty-state svg { width: 88px; height: 88px; opacity: 0.3; margin-bottom: 18px; }
 .empty-state h3 { font-size: 20px; margin-bottom: 10px; }
 
+/* ⚠ 避雷警告横幅 */
+.warn-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(135deg, #3D1A1A 0%, #2D0F0F 100%);
+  border-bottom: 2px solid #E62E2E;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #F2B8B5;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.3s cubic-bezier(0.2,0,0,1), opacity 0.3s cubic-bezier(0.2,0,0,1);
+}
+.warn-banner.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+.warn-badge {
+  background: #E62E2E;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.warn-banner p {
+  margin: 0;
+  line-height: 1.5;
+  text-align: center;
+}
+.warn-banner a {
+  color: #FF8A80;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.warn-banner a:hover { color: #FF5252; }
+.warn-dismiss {
+  background: none;
+  border: 1px solid rgba(242,184,181,0.3);
+  color: #F2B8B5;
+  padding: 4px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.warn-dismiss:hover {
+  background: rgba(242,184,181,0.1);
+  border-color: rgba(242,184,181,0.5);
+}
+.light .warn-banner {
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  border-bottom-color: #C62828;
+  color: #B71C1C;
+}
+.light .warn-badge { background: #C62828; }
+.light .warn-banner a { color: #C62828; }
+.light .warn-banner a:hover { color: #B71C1C; }
+.light .warn-dismiss {
+  border-color: rgba(183,28,28,0.2);
+  color: #B71C1C;
+}
+.light .warn-dismiss:hover {
+  background: rgba(183,28,28,0.06);
+  border-color: rgba(183,28,28,0.4);
+}
+
 /* Footer */
 footer {
   text-align: center;
@@ -1128,6 +1207,12 @@ footer a { color: var(--primary); text-decoration: none; }
   <button class="lang-toggle" id="langBtn" data-i18n="lang_btn" title="切换语言">中</button>
   <button class="about-toggle" id="aboutBtn" data-i18n="about_btn" title="关于">i</button>
 </header>
+
+<div class="warn-banner" id="warnBanner">
+  <span class="warn-badge">避雷</span>
+  <p>南京建康高级技工学校（nj.gtue.cn）——强制劳动打卡侵犯隐私、非法扣押手机、打击报复举报人、师资造假、资质存疑。<a href="https://github.com/Beihai10078/xiaomi-price-tier/blob/master/README.md#%E9%99%A2%E6%A0%A1%E9%BB%91%E5%90%8D%E5%8D%95" target="_blank">查看详情</a></p>
+  <button class="warn-dismiss" id="warnDismiss">知道了</button>
+</div>
 
 <div class="container">
   <div class="stats-bar">
@@ -1997,6 +2082,21 @@ updateBackToTop();
 $backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// ─── 避雷横幅 ───
+(function(){
+  const banner = document.getElementById('warnBanner');
+  const dismiss = document.getElementById('warnDismiss');
+  if (!banner || !dismiss) return;
+  if (localStorage.getItem('warn-banner-dismissed') === '1') {
+    banner.classList.add('hidden');
+    return;
+  }
+  dismiss.addEventListener('click', () => {
+    banner.classList.add('hidden');
+    localStorage.setItem('warn-banner-dismissed', '1');
+  });
+})();
 </script>
 </body>
 </html>
